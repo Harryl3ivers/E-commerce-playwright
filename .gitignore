@@ -24,11 +24,7 @@ traces/
 .vscode/
 .idea/
 
-venv/
-.venv/
-__pycache__/
-.pytest_cache/
-*.pyc
+# Environment files
 .env
 
 # OS files
