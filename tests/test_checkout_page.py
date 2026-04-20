@@ -19,3 +19,20 @@ def test_user_can_complete_checkout(page):
     checkout.finish_checkout()
 
     assert "thank you for your order!" in checkout.order_complete().lower()
+
+def test_checkout_needs_first_name(page):
+    login_page = LoginPage(page)
+    login_page.load()
+    login_page.login(STANDARD_USERNAME, PASSWORD)
+
+    products_page = ProductsPage(page)
+    products_page.add_first_product_to_cart()
+    products_page.go_to_cart()
+
+    checkout_page = CheckOutPage(page)
+    checkout_page.start_checkout()
+    checkout_page.fill_checkout_info("", "Doe", "12345")
+    checkout_page.continue_checkout()
+
+    assert "First Name is required" in checkout_page.get_error_message()
+     

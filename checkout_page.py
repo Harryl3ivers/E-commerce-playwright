@@ -18,4 +18,7 @@ class CheckOutPage(BasePage):
     def order_complete(self):
         return self.page.locator(".complete-header").inner_text()
     
+    def get_error_message(self):
+        return self.page.locator('[data-test="error"]').inner_text()
+    
        
