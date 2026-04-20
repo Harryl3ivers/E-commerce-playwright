@@ -15,3 +15,9 @@ def test_invalid_login(page):
     Login.load()
     Login.login("wrong","wrong")
     assert "error" in page.content().lower()
+
+def test_user_locked_out(page):
+    Login = LoginPage(page)
+    Login.load()
+    Login.login("locked_out_user","secret_sauce")
+    assert "locked out" in page.content().lower()

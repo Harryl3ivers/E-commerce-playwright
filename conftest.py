@@ -1,6 +1,9 @@
 import pytest
 from playwright.sync_api import sync_playwright
 import os
+from login_page import LoginPage
+from utils.config import BASE_URL, STANDARD_USERNAME, PASSWORD
+print("LOADING CONFTEST")
 @pytest.fixture(scope="function")
 def page():
     with sync_playwright() as p:
@@ -34,3 +37,10 @@ def pytest_runtest_makereport(item):
                     page.screenshot(path=f"screenshots/{item.name}.png")
             except Exception as e:
                 print(f"[WARN] Screenshot failed: {e}")
+
+@pytest.fixture
+def login_page_auto(page):
+    login_page = LoginPage(page)
+    login_page.load()
+    login_page.login(STANDARD_USERNAME,PASSWORD)
+    return page

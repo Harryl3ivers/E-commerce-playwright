@@ -7,6 +7,4 @@ class ProductsPage(BasePage):
     
     def go_to_cart(self):
         self.click(".shopping_cart_link")
-        
-    def cart_count(self):
-        return self.page.locator(".cart_item").count()
+    
