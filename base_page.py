@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 class BasePage:
     def __init__(self,page: Page):
@@ -8,9 +8,23 @@ class BasePage:
         self.page.goto(url)
     
     def click(self, selector):
-        self.page.click(selector)
+         element = self.page.locator(selector)
+         expect(element).to_be_visible()
+         element.click()
+        
 
     def fill(self, selector, text):
-        self.page.fill(selector, text)
+        element = self.page.locator(selector)
+        expect(element).to_be_visible()
+        element.fill(text)
 
-        
+    def get_count(self,selector:str):
+        return self.page.locator(selector).count()
+    
+    def get_text(self, selector:str):
+        element = self.page.locator(selector)
+        expect(element).to_be_visible()
+        return element.inner_text()
+    
+    def is_visible(self,selector) -> bool:
+        return self.page.locator(selector).is_visible()

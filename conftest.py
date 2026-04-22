@@ -42,5 +42,6 @@ def pytest_runtest_makereport(item):
 def login_page_auto(page):
     login_page = LoginPage(page)
     login_page.load()
+    page.pause()
     login_page.login(STANDARD_USERNAME,PASSWORD)
     return page
