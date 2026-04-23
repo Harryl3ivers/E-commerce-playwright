@@ -1,11 +1,12 @@
 from login_page import LoginPage
 from products_page import ProductsPage
 from checkout_page import CheckOutPage
+from utils.config import STANDARD_USERNAME,PASSWORD
 
 def test_full_user_flow(page):
     login = LoginPage(page)
     login.load()
-    login.login("standard_user", "secret_sauce")
+    login.login(STANDARD_USERNAME, PASSWORD)
 
     products = ProductsPage(page)
     products.add_first_product_to_cart()
@@ -16,12 +17,5 @@ def test_full_user_flow(page):
     checkout.fill_checkout_info("John","Doe","12345")
     checkout.continue_checkout()
     checkout.finish_checkout()
-
-    # page.click("#checkout")
-    # page.fill("#first-name", "John")
-    # page.fill("#last-name", "Doe")
-    # page.fill("#postal-code", "12345")
-    # page.click("#continue")
-    # page.click("#finish")
 
     assert checkout.order_complete() == "thank you for your order" 
