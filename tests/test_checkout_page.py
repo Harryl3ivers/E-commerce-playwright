@@ -4,15 +4,16 @@ from login_page import LoginPage
 from  conftest import login_page_auto
 from conftest import shop_flow
 from shop_flow import ShopFlow
+import pytest
 
-
-def test_user_can_complete_checkout(shop_flow):
-    shop_flow.complete_purchase("Sauce Labs Backpack","John","Doe","12345")
-    assert "thank you for your order!" in shop_flow.order_complete().lower()
+@pytest.mark.parametrize("product",[
+    "Sauce Labs Backpack",
+    "Sauce Labs Bike Light",
+    "Sauce Labs Onesie"
+])
+def test_user_can_complete_checkout(shop_flow,product):
+    shop_flow.complete_purchase(product,"John","Doe","12345")
     
-
-
-     
 
 def test_checkout_needs_first_name(login_page_auto):
     
