@@ -1,6 +1,8 @@
 from shopping_cart import ShoppingCart
 from products_page import ProductsPage
 from conftest import login_page_auto
+import pytest
+
 
 def test_user_can_remove_item_from_cart(login_page_auto):
     products_page = ProductsPage(login_page_auto)

@@ -16,7 +16,7 @@ def test_invalid_login(page):
     login = LoginPage(page)
     login.load()
     login.login("wrong","wrong")
-    assert "Epic sadface: Username and password do not match any user in this service" in page.content().lower()
+    assert "Epic sadface: Username and password do not match any user in this service" in page.content()
 
 def test_user_locked_out(page):
     login = LoginPage(page)

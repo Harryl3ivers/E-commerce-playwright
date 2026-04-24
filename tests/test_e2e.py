@@ -18,4 +18,4 @@ def test_full_user_flow(page):
     checkout.continue_checkout()
     checkout.finish_checkout()
 
-    assert checkout.order_complete() == "thank you for your order" 
+    assert checkout.order_complete() == "Thank you for your order!" 
