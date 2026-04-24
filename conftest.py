@@ -3,6 +3,11 @@ from playwright.sync_api import sync_playwright
 import os
 from login_page import LoginPage
 from utils.config import BASE_URL, STANDARD_USERNAME, PASSWORD
+from shop_flow import ShopFlow
+from products_page import ProductsPage
+from shopping_cart import ShoppingCart
+from checkout_page import CheckOutPage
+
 print("LOADING CONFTEST")
 @pytest.fixture(scope="function")
 def page():
@@ -42,6 +47,13 @@ def pytest_runtest_makereport(item):
 def login_page_auto(page):
     login_page = LoginPage(page)
     login_page.load()
-    page.pause()
     login_page.login(STANDARD_USERNAME,PASSWORD)
     return page
+
+@pytest.fixture
+def shop_flow(login_page_auto):
+    return ShopFlow(
+        ProductsPage(login_page_auto),
+        ShoppingCart(login_page_auto),
+        CheckOutPage(login_page_auto)
+    )
