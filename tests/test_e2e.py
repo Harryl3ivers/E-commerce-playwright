@@ -4,10 +4,11 @@ from checkout_page import CheckOutPage
 from utils.config import STANDARD_USERNAME,PASSWORD
 from shopping_cart import ShoppingCart
 from shop_flow import ShopFlow   
- 
+from user import User
 
 def test_full_user_flow(shop_flow):
-    shop_flow.complete_purchase("Sauce Labs Backpack","John","Doe","12345")
+    user = User("Noah","Shaw","12345")
+    shop_flow.complete_purchase(["Sauce Labs Backpack"],user)
     # login = LoginPage(page)
     # login.load()
     # login.login(STANDARD_USERNAME, PASSWORD)

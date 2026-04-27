@@ -5,5 +5,5 @@ class ShoppingCart(BasePage):
     
     def cart_count(self):
         return self.page.locator(".cart_item").count()
-    def cart_empty(self):
+    def is_cart_empty(self)  -> bool:
         return self.cart_count() == 0

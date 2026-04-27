@@ -7,6 +7,7 @@ from shop_flow import ShopFlow
 from products_page import ProductsPage
 from shopping_cart import ShoppingCart
 from checkout_page import CheckOutPage
+from dataclasses import dataclass
 
 print("LOADING CONFTEST")
 @pytest.fixture(scope="function")

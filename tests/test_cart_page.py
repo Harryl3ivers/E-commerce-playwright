@@ -2,15 +2,21 @@ from shopping_cart import ShoppingCart
 from products_page import ProductsPage
 from conftest import login_page_auto
 import pytest
-
+from shop_flow import ShopFlow   
 
 def test_user_can_remove_item_from_cart(login_page_auto):
-    products_page = ProductsPage(login_page_auto)
-    products_page.add_first_product_to_cart()
-    products_page.go_to_cart()
+    products = ProductsPage(login_page_auto)
+    cart = ShoppingCart(login_page_auto)
 
-    cart_page = ShoppingCart(login_page_auto)
-    assert cart_page.cart_count() == 1
+    products.add_product_by_name("Sauce Labs Backpack")
+    products.go_to_cart()
 
-    cart_page.remove_first_item()
-    assert cart_page.cart_empty()
+    cart.remove_first_item()
+    assert cart.is_cart_empty()
+    
+
+def test_that_items_are_in_cart(shop_flow,product):
+    shop_flow.products.add_product_by_name(product)
+    shop_flow.products.go_to_cart()
+    items = shop_flow.products.get_cart_items()
+    assert product in items

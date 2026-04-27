@@ -13,6 +13,7 @@ import pytest
 ])
 def test_user_can_complete_checkout(shop_flow,product):
     shop_flow.complete_purchase(product,"John","Doe","12345")
+    assert "Thank you for your order!" in shop_flow.checkout.order_complete()
     
 
 def test_checkout_needs_first_name(login_page_auto):
