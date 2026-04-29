@@ -1,5 +1,6 @@
 from base_page import BasePage
 from user import User
+from playwright.sync_api import expect
 
 class CheckOutPage(BasePage):
     CHECKOUT_BUTTON = "#checkout"
@@ -26,7 +27,18 @@ class CheckOutPage(BasePage):
     def order_complete(self):
         return self.page.locator(".complete-header").inner_text()
     
+    def has_error(self):
+        error = self.page.locator('[data-test="error"]')
+    
+        try:
+            expect(error).to_be_visible(timeout=2000)
+            return True
+        except:
+            return False
+
     def get_error_message(self):
-        return self.page.locator('[data-test="error"]').inner_text()
+        error = self.page.locator('[data-test="error"]')
+        expect(error).to_be_visible()
+        return error.inner_text()
     
     

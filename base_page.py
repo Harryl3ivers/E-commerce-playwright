@@ -15,7 +15,7 @@ class BasePage:
 
     def fill(self, selector, text):
         element = self.page.locator(selector)
-        expect(element).to_be_visible()
+        expect(element).to_be_visible(timeout=5000)
         element.fill(text)
 
     def get_count(self,selector:str):
@@ -25,6 +25,7 @@ class BasePage:
         element = self.page.locator(selector)
         expect(element).to_be_visible()
         return element.inner_text()
+    
     
     def is_visible(self,selector) -> bool:
         return self.page.locator(selector).is_visible()

@@ -5,6 +5,7 @@ from  conftest import login_page_auto
 from conftest import shop_flow
 from shop_flow import ShopFlow
 import pytest
+from user import User
 
 @pytest.mark.parametrize("product",[
     "Sauce Labs Backpack",
@@ -12,32 +13,31 @@ import pytest
     "Sauce Labs Onesie"
 ])
 def test_user_can_complete_checkout(shop_flow,product):
-    shop_flow.complete_purchase(product,"John","Doe","12345")
+    user = User("John","Doe","12345")
+    shop_flow.complete_purchase(product,user)
     assert "Thank you for your order!" in shop_flow.checkout.order_complete()
     
 
-def test_checkout_needs_first_name(login_page_auto):
+def test_checkout_needs_first_name(shop_flow):
+    user = User("","Shaw","12345")
+    shop_flow.complete_purchase("Sauce Labs Backpack",user)
+
+    assert "First Name is required" in shop_flow.checkout.get_error_message()
+
+def test_postal_code_required(shop_flow):
+    user = User("Noah","Shaw","")
+    shop_flow.complete_purchase("Sauce Labs Backpack",user)
+    assert "Error: Postal Code is required" in shop_flow.checkout.get_error_message()
+
+@pytest.mark.parametrize("user",[
+   User( "Noah","Shaw","12345"),
+    User("Jane","Doe","54321"),
+])
+def test_checkout_multiple_users(shop_flow,user ):
+    shop_flow.complete_purchase("Sauce Labs Backpack",user)
+    assert shop_flow.checkout.order_complete()
     
-
-    products_page = ProductsPage(login_page_auto)
-    products_page.add_first_product_to_cart()
-    products_page.go_to_cart()
-
-    checkout_page = CheckOutPage(login_page_auto)
-    checkout_page.start_checkout()
-    checkout_page.fill_checkout_info("", "Doe", "12345")
-    checkout_page.continue_checkout()
-
-    assert "First Name is required" in checkout_page.get_error_message()
-
-def test_postal_code_required(login_page_auto):
-    products_page = ProductsPage(login_page_auto)
-    products_page.add_first_product_to_cart()
-    products_page.go_to_cart()
-
-    checkout_page = CheckOutPage(login_page_auto)
-    checkout_page.start_checkout()
-    checkout_page.fill_checkout_info("John", "Doe", "")
-    checkout_page.continue_checkout()
-    assert "Postal Code is required" in checkout_page.get_error_message()
+    
      
+
+ 
