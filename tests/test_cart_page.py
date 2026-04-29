@@ -16,6 +16,11 @@ def test_user_can_remove_item_from_cart(login_page_auto):
     assert cart.is_cart_empty()
     
 
+@pytest.mark.parametrize("product", [
+    "Sauce Labs Backpack",
+    "Sauce Labs Bike Light",
+    "Sauce Labs Onesie"
+])
 def test_that_items_are_in_cart(shop_flow,product):
     shop_flow.products.add_product_by_name(product)
     shop_flow.products.go_to_cart()
