@@ -1,5 +1,5 @@
-from user import User
-from checkout_page import CheckOutPage
+from models.user import User
+from pages.checkout_page import CheckOutPage
 
 class ShopFlow():
     def __init__(self,products,cart,checkout):
@@ -16,3 +16,4 @@ class ShopFlow():
         if self.checkout.has_error():
             return
         self.checkout.finish_checkout()
+        
