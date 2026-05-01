@@ -1,15 +1,15 @@
 import pytest
 from playwright.sync_api import sync_playwright
 import os
-from login_page import LoginPage
+from pages.login_page import LoginPage
 from utils.config import BASE_URL, STANDARD_USERNAME, PASSWORD
-from shop_flow import ShopFlow
-from products_page import ProductsPage
-from shopping_cart import ShoppingCart
-from checkout_page import CheckOutPage
+from flows.shop_flow import ShopFlow
+from pages.products_page import ProductsPage
+from pages.shopping_cart import ShoppingCart
+from pages.checkout_page import CheckOutPage
 from dataclasses import dataclass
 
-print("LOADING CONFTEST")
+
 @pytest.fixture(scope="function")
 def page():
     with sync_playwright() as p:
