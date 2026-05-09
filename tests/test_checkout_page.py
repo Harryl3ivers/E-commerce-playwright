@@ -11,10 +11,15 @@ from models.user import User
     "Sauce Labs Onesie"
 ])
 def test_user_can_complete_checkout(shop_flow,product):
-    user = User("John","Doe","12345")
+    user = User("John", "Doe", "12345")
+   
+
     shop_flow.complete_purchase(product,user)
-    assert not shop_flow.checkout.has_error()
-    assert "Thank you for your order!" in shop_flow.checkout.order_complete()
+
+    header = shop_flow.checkout.complete_header()
+
+    assert header.is_visible()
+    assert header.inner_text() == "Thank you for your order!"
     
 
 def test_checkout_needs_first_name(shop_flow):
@@ -24,8 +29,10 @@ def test_checkout_needs_first_name(shop_flow):
     shop_flow.checkout.start_checkout()
     shop_flow.checkout.fill_checkout_info(user)
     shop_flow.checkout.continue_checkout()
-    assert shop_flow.checkout.has_error()
-    assert "First Name is required" in shop_flow.checkout.get_error_message()
+    error = shop_flow.checkout.error_locator()
+    assert error.is_visible()
+    assert "First Name is required" in error.inner_text()
+    
 
 def test_postal_code_required(shop_flow):
     user = User("Noah","Shaw","")
@@ -34,8 +41,10 @@ def test_postal_code_required(shop_flow):
     shop_flow.checkout.start_checkout()
     shop_flow.checkout.fill_checkout_info(user)
     shop_flow.checkout.continue_checkout()
-    assert  shop_flow.checkout.has_error()
-    assert "Error: Postal Code is required" in shop_flow.checkout.get_error_message()
+    error = shop_flow.checkout.error_locator()
+    assert error.is_visible()
+    assert "Error: Postal Code is required" in error.inner_text()
+    
 
 @pytest.mark.parametrize("user",[
    User( "Noah","Shaw","12345"),
@@ -43,8 +52,8 @@ def test_postal_code_required(shop_flow):
 ])
 def test_checkout_multiple_users(shop_flow,user ):
     shop_flow.complete_purchase("Sauce Labs Backpack",user)
-    assert not shop_flow.checkout.has_error()
-    assert shop_flow.checkout.order_complete()
+    assert not shop_flow.checkout.error_locator().is_visible()
+    assert shop_flow.checkout.complete_header()
     
 
 def test_user_can_recover_from_checkout_error(shop_flow):
@@ -55,29 +64,30 @@ def test_user_can_recover_from_checkout_error(shop_flow):
     shop_flow.products.go_to_cart()
     shop_flow.checkout.start_checkout()
 
-    # Submit invalid info
+    
     shop_flow.checkout.fill_checkout_info(user)
     shop_flow.checkout.continue_checkout()
 
-    # Verify error
-    assert shop_flow.checkout.has_error()
-    assert "First Name is required" in shop_flow.checkout.get_error_message()
+    
+    error = shop_flow.checkout.error_locator()
+    assert error.is_visible()
+    assert "First Name is required" in error.inner_text()
+    
 
-    # Correct the field
+    
     user.first_name = "Noah"
 
     # Refill and continue
     shop_flow.checkout.fill_checkout_info(user)
     shop_flow.checkout.continue_checkout()
 
-    # Confirm no error
-    assert not shop_flow.checkout.has_error()
-
-    # Finish checkout
+   
+    assert not shop_flow.checkout.error_locator().is_visible()
     shop_flow.checkout.finish_checkout()
-
-    # Verify success
-    assert "Thank you for your order!" in shop_flow.checkout.order_complete()
+    header = shop_flow.checkout.complete_header()
+    assert header.is_visible()
+    assert header.inner_text() == "Thank you for your order!"
+   
      
 
  

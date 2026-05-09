@@ -26,22 +26,10 @@ class CheckOutPage(BasePage):
     
     def finish_checkout(self):
         self.click(self.FINISH)
-    
-    def order_complete(self):
-        return self.page.locator(".complete-header").inner_text()
-    
-    def has_error(self):
-        error = self.page.locator('[data-test="error"]')
-    
-        try:
-            expect(error).to_be_visible(timeout=2000)
-            return True
-        except:
-            return False
 
-    def get_error_message(self):
-        error = self.page.locator('[data-test="error"]')
-        expect(error).to_be_visible()
-        return error.inner_text()
+    def error_locator(self):
+        return self.page.locator('[data-test="error"]')
     
+    def complete_header(self):
+        return self.page.locator(".complete-header")  
     
