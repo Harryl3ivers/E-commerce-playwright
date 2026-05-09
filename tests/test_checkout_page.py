@@ -29,7 +29,11 @@ def test_checkout_needs_first_name(shop_flow):
 
 def test_postal_code_required(shop_flow):
     user = User("Noah","Shaw","")
-    shop_flow.complete_purchase("Sauce Labs Backpack",user)
+    shop_flow.products.add_product_by_name("Sauce Labs Backpack")
+    shop_flow.products.go_to_cart()
+    shop_flow.checkout.start_checkout()
+    shop_flow.checkout.fill_checkout_info(user)
+    shop_flow.checkout.continue_checkout()
     assert  shop_flow.checkout.has_error()
     assert "Error: Postal Code is required" in shop_flow.checkout.get_error_message()
 
@@ -44,15 +48,35 @@ def test_checkout_multiple_users(shop_flow,user ):
     
 
 def test_user_can_recover_from_checkout_error(shop_flow):
-    user = User("","Shaw","12345")
-    shop_flow.complete_purchase("Sauce Labs Backpack",user)
-    assert  shop_flow.checkout.has_error()
-    assert "First Name is required" in shop_flow.checkout.get_error_message()
+    user = User("", "Shaw", "12345")
 
-    user.first_name = "Noah"
+    # Reach checkout
+    shop_flow.products.add_product_by_name("Sauce Labs Backpack")
+    shop_flow.products.go_to_cart()
+    shop_flow.checkout.start_checkout()
+
+    # Submit invalid info
     shop_flow.checkout.fill_checkout_info(user)
     shop_flow.checkout.continue_checkout()
+
+    # Verify error
+    assert shop_flow.checkout.has_error()
+    assert "First Name is required" in shop_flow.checkout.get_error_message()
+
+    # Correct the field
+    user.first_name = "Noah"
+
+    # Refill and continue
+    shop_flow.checkout.fill_checkout_info(user)
+    shop_flow.checkout.continue_checkout()
+
+    # Confirm no error
     assert not shop_flow.checkout.has_error()
+
+    # Finish checkout
+    shop_flow.checkout.finish_checkout()
+
+    # Verify success
     assert "Thank you for your order!" in shop_flow.checkout.order_complete()
      
 
