@@ -31,5 +31,14 @@ class CheckOutPage(BasePage):
         return self.page.locator('[data-test="error"]')
     
     def complete_header(self):
-        return self.page.locator(".complete-header")  
+        return self.page.locator(".complete-header")
+
+    def subtotal_label(self):
+        return self.page.locator(".summary_subtotal_label")
+
+    def tax_label(self):
+        return self.page.locator(".summary_tax_label")
+
+    def total_label(self):
+        return self.page.locator(".summary_total_label")
     

@@ -7,7 +7,7 @@ class ProductsPage(BasePage):
     def add_first_product_to_cart(self):
         self.page.locator("[data-test^='add-to-cart']").first.click()
     
-    def add_product_by_name(self, product_names: list[str] | str) -> list[str]:
+    def add_product_by_name(self, product_names: list[str]) -> None:
         if isinstance(product_names, str):
             product_names = [product_names]
         product_names = list(dict.fromkeys(product_names))
@@ -22,6 +22,9 @@ class ProductsPage(BasePage):
             added_items.append(name)
 
         return added_items
+    
+    def product_price(self,product_name:str):
+        return self.page.locator(".inventory_item").filter(has_text=product_name).locator(".inventory_item_price")
         
     
     def go_to_cart(self):
