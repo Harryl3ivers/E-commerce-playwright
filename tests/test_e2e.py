@@ -10,7 +10,7 @@ def test_full_user_flow(shop_flow):
     user = User("Noah","Shaw","12345")
     shop_flow.complete_purchase(["Sauce Labs Backpack"],user)
     assert not shop_flow.checkout.has_error()
-    shop_flow.checkout.finish_checkout()
+    
     assert shop_flow.checkout.order_complete()
   
 def test_user_can_complete_multiple_orders(shop_flow):
@@ -18,17 +18,12 @@ def test_user_can_complete_multiple_orders(shop_flow):
     #first order
     shop_flow.complete_purchase("Sauce Labs Backpack",user)
     assert not shop_flow.checkout.has_error()
-    shop_flow.checkout.finish_checkout()
+    assert shop_flow.checkout.order_complete()
 
     assert "Thank you for your order!" in shop_flow.checkout.order_complete()
-
-    shop_flow.products.add_product_by_name("Sauce Labs Bike Light")
-    shop_flow.products.go_to_cart()
-
-    shop_flow.checkout.start_checkout()
-    shop_flow.checkout.fill_checkout_info(user)
-    shop_flow.checkout.continue_checkout()
+    shop_flow.checkout.go_back_home()
+    
+    shop_flow.complete_purchase("Sauce Labs Bike Light", user)
     assert not shop_flow.checkout.has_error()
-    shop_flow.checkout.finish_checkout()
     assert "Thank you for your order!" in shop_flow.checkout.order_complete()
      

@@ -38,7 +38,7 @@ def test_cart_persits_through_navigation(login_page_auto):
     products.add_product_by_name("Sauce Labs Backpack")
     products.go_to_cart()
     assert cart.cart_count() == 1
-    login_page_auto.goBack();
+    login_page_auto.go_back()
     products.go_to_cart()
     assert cart.cart_count() == 1
 
@@ -49,4 +49,4 @@ def test_cart_handles_duplicates(login_page_auto):
         "Sauce Labs Backpack"])
     products.go_to_cart()
     items = products.get_cart_items()
-    assert items.count("Sauce Labs Backpack") in [1,3]
+    assert items.count("Sauce Labs Backpack") == 1

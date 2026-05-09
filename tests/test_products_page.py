@@ -1,6 +1,6 @@
-from products_page import ProductsPage
+from pages.products_page import ProductsPage
 from conftest import login_page_auto
-from shopping_cart import ShoppingCart
+from pages.shopping_cart import ShoppingCart
 import pytest
 
 def test_products_page_add_cart(login_page_auto):

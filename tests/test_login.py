@@ -1,4 +1,4 @@
-from login_page import LoginPage
+from pages.login_page import LoginPage
 import pytest
 from utils.config import STANDARD_USERNAME,PASSWORD
 

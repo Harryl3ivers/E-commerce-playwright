@@ -1,4 +1,4 @@
-from base_page import BasePage
+from pages.base_page import BasePage
 
 class ProductsPage(BasePage):
     def get_cart_items(self):
@@ -10,6 +10,7 @@ class ProductsPage(BasePage):
     def add_product_by_name(self, product_names: list[str] | str) -> list[str]:
         if isinstance(product_names, str):
             product_names = [product_names]
+        product_names = list(dict.fromkeys(product_names))
 
         added_items = []
 

@@ -14,3 +14,4 @@ class ShopFlow():
         self.checkout.fill_checkout_info(user)
         self.checkout.continue_checkout()
         self.checkout.finish_checkout()
+        

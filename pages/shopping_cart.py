@@ -1,4 +1,4 @@
-from base_page import BasePage
+from pages.base_page import BasePage
 class ShoppingCart(BasePage):
     def remove_first_item(self):
         self.click(".cart_item button")

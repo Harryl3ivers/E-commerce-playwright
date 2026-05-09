@@ -1,5 +1,5 @@
-from base_page import BasePage
-from user import User
+from pages.base_page import BasePage
+from models.user import User
 from playwright.sync_api import expect
 
 class CheckOutPage(BasePage):
@@ -17,6 +17,9 @@ class CheckOutPage(BasePage):
         self.fill(self.FIRST_NAME,user.first_name)
         self.fill(self.LAST_NAME,user.last_name)
         self.fill(self.POSTAL_CODE,user.postal_code)
+    
+    def go_back_home(self):
+        return self.page.locator("#back-to-products").click()
     
     def continue_checkout(self):
         self.click(self.CONTINUE)
