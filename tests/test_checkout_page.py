@@ -4,6 +4,7 @@ from pages.login_page import LoginPage
 from flows.shop_flow import ShopFlow
 import pytest
 from models.user import User
+from playwright.sync_api import expect
 
 @pytest.mark.parametrize("product",[
     "Sauce Labs Backpack",
@@ -89,5 +90,60 @@ def test_user_can_recover_from_checkout_error(shop_flow):
     assert header.inner_text() == "Thank you for your order!"
    
      
+def test_checkout_total_is_correct(shop_flow):
+    user = User("John","Doe","12345")
+    shop_flow.products.add_product_by_name("Sauce Labs Backpack")
+    shop_flow.products.go_to_cart()
+    shop_flow.checkout.start_checkout()
 
- 
+    shop_flow.checkout.fill_checkout_info(user)
+    shop_flow.checkout.continue_checkout()
+
+    subtotal = shop_flow.checkout.subtotal_label()
+    tax = shop_flow.checkout.tax_label()
+    total = shop_flow.checkout.total_label()
+
+    expect(subtotal).to_have_text("Item total: $29.99")
+    expect(tax).to_have_text("Tax: $2.40")
+    expect(total).to_have_text("Total: $32.39")
+
+def test_subtotal_is_correct(shop_flow):
+    user = User("John", "Doe", "12345")
+
+    shop_flow.products.add_product_by_name("Sauce Labs Backpack")
+    shop_flow.products.go_to_cart()
+
+    shop_flow.checkout.start_checkout()
+    shop_flow.checkout.fill_checkout_info(user)
+    shop_flow.checkout.continue_checkout()
+
+    subtotal = shop_flow.checkout.subtotal_label()
+
+    expect(subtotal).to_have_text("Item total: $29.99")
+
+def test_total_equals_subtotal_plus_tax(shop_flow):
+    user = User("John", "Doe", "12345")
+
+    shop_flow.products.add_product_by_name("Sauce Labs Backpack")
+    shop_flow.products.go_to_cart()
+
+    shop_flow.checkout.start_checkout()
+    shop_flow.checkout.fill_checkout_info(user)
+    shop_flow.checkout.continue_checkout() 
+
+    subtotal_text = shop_flow.checkout.subtotal_label()
+    tax_text = shop_flow.checkout.tax_label()
+    total_text = shop_flow.checkout.total_label()
+
+    subtotal = float(subtotal_text.replace("Item total: $", ""))
+    tax = float(tax_text.replace("Tax: $", ""))
+    total = float(total_text.replace("Total: $", ""))
+
+    assert round(subtotal + tax,2) == total
+
+def test_multiple_items_total_is_correct(shop_flow):
+    user = User("John", "Doe", "12345")
+    shop_flow.products.add_product_by_name([
+        "Sauce Labs Backpack",
+        "Sauce Labs Bike Light"
+    ])
