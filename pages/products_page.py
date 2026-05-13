@@ -1,6 +1,7 @@
 from pages.base_page import BasePage
 
 class ProductsPage(BasePage):
+    SORT_DROPDOWN = ".product_sort_container"
     def get_cart_items(self):
         return self.page.locator(".cart_item .inventory_item_name").all_inner_texts()
 
@@ -23,8 +24,23 @@ class ProductsPage(BasePage):
 
         return added_items
     
-    def product_price(self,product_name:str):
+    def product_price_by_name(self,product_name:str):
         return self.page.locator(".inventory_item").filter(has_text=product_name).locator(".inventory_item_price")
+         
+    
+    def sort_products(self, option: str):
+        self.page.select_option(self.SORT_DROPDOWN,option)
+    
+    def product_names(self):
+        return self.page.locator(".inventory_item_name").all_inner_texts()
+    
+    def product_prices(self):
+        prices = self.page.locator(".inventory_item_price").all_inner_texts()
+        return[
+            float(price.replace("$",""))
+            for price in prices
+        ]
+    
         
     
     def go_to_cart(self):
