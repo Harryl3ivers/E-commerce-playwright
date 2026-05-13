@@ -69,3 +69,19 @@ def test_cart_page_persits_after_reload(login_page_auto):
     badge = products.cart_badge()
     expect(badge).to_have_text("1")
     
+def test_cannot_checkout_with_empty_cart(shop_flow):
+    shop_flow.products.go_to_cart()
+    shop_flow.checkout.start_checkout()
+    assert shop_flow.cart.is_cart_empty()
+
+def test_cart_clears_completely(login_page_auto):
+    products = ProductsPage(login_page_auto)
+    cart = ShoppingCart(login_page_auto)
+
+    products.add_product_by_name(["Sauce Labs Backpack", "Sauce Labs Bike Light"])
+    products.go_to_cart()
+
+    cart.remove_first_item()
+    cart.remove_first_item()
+
+    assert cart.is_cart_empty()

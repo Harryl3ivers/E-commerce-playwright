@@ -10,6 +10,12 @@ class LoginPage(BasePage):
         self.fill("#user-name", STANDARD_USERNAME)
         self.fill("#password", PASSWORD)
         self.click("[data-test^='login-button']")
+    
+    def open_menu(self):
+        self.click("#react-burger-menu-btn")
+    
+    def logout(self):
+        self.click("#logout_sidebar_link")
 
     def is_logged_in(self) -> bool:
         current_url = self.page.url
