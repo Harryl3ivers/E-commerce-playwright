@@ -74,3 +74,11 @@ def test_cart_badge_increments(login_page_auto):
 
     badge = products.cart_badge()
     expect(badge).to_have_text("2")
+
+def test_badge_removed_when_cart_empty(login_page_auto):
+    products = ProductsPage(login_page_auto)
+    cart = ShoppingCart(login_page_auto)
+    products.add_product_by_name("Sauce Labs Backpack")
+    products.go_to_cart()
+    cart.remove_first_item()
+    assert not products.cart_badge().is_visible()
