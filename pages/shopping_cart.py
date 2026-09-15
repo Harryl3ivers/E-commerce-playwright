@@ -1,7 +1,7 @@
 from pages.base_page import BasePage
 class ShoppingCart(BasePage):
     def remove_first_item(self):
-        self.click(".cart_item button")
+        self.page.locator(".cart_item button").first.click()
     
     def cart_count(self):
         return self.page.locator(".cart_item").count()

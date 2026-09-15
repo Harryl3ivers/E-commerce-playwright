@@ -40,10 +40,10 @@ INSERT INTO products (id, name, price)
 VALUES (2, 'Sauce Labs Bike Light', 9.99);
 
 INSERT INTO products (id, name, price)
-VALUES (3, "Sauce Labs Onesie",7.99)
+VALUES (3, "Sauce Labs Onesie",7.99);
 
 INSERT INTO orders(id,user_id,total,status)
-VALUES(1,1,29.99,"completed")
+VALUES(1,1,29.99,"completed");
 
 INSERT INTO order_items(id,order_id,product_id,quantity,price)
-VALUES(1,1,1,1,29.99)
+VALUES(1,1,1,1,29.99);

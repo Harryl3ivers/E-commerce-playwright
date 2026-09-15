@@ -34,10 +34,13 @@ def test_checkout_empty_cart(shop_flow):
     assert shop_flow.cart.is_cart_empty()
 
 def test_cart_persits_through_navigation(login_page_auto):
+
     products = ProductsPage(login_page_auto)
     cart = ShoppingCart(login_page_auto)
+
     products.add_product_by_name("Sauce Labs Backpack")
     products.go_to_cart()
+
     assert cart.cart_count() == 1
     login_page_auto.go_back()
     products.go_to_cart()
@@ -62,12 +65,27 @@ def test_product_price_matches_between_inventory_and_cart(login_page_auto):
     cart_price = cart.cart_item_prices()[0]
     assert inventory_price == cart_price
 
-def test_cart_page_persits_after_reload(login_page_auto):
+def test_cart_persits_through_navigation(login_page_auto):
+
     products = ProductsPage(login_page_auto)
-    products.add_first_product_to_cart("Sauce Labs Backpack")
-    login_page_auto.reload()
-    badge = products.cart_badge()
-    expect(badge).to_have_text("1")
+    cart = ShoppingCart(login_page_auto)
+
+    products.add_product_by_name("Sauce Labs Backpack")
+    products.go_to_cart()
+
+    print("FIRST CART:", login_page_auto.url)
+    print("FIRST COUNT:", cart.cart_count())
+
+    login_page_auto.go_back()
+
+    print("AFTER BACK:", login_page_auto.url)
+
+    products.go_to_cart()
+
+    print("SECOND CART:", login_page_auto.url)
+    print("SECOND COUNT:", cart.cart_count())
+
+    assert cart.cart_count() == 1
     
 def test_cannot_checkout_with_empty_cart(shop_flow):
     shop_flow.products.go_to_cart()

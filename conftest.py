@@ -1,6 +1,7 @@
 import pytest
 from playwright.sync_api import sync_playwright
 import os
+import sqlite3
 from pages.login_page import LoginPage
 from utils.config import BASE_URL, STANDARD_USERNAME, PASSWORD
 from flows.shop_flow import ShopFlow
@@ -58,3 +59,9 @@ def shop_flow(login_page_auto):
         ShoppingCart(login_page_auto),
         CheckOutPage(login_page_auto)
     )
+
+@pytest.fixture
+def database_connection():
+    conneciton = sqlite3.connect("database/test_database.db")
+    yield conneciton
+    conneciton.close()

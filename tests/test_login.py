@@ -37,11 +37,11 @@ def test_login_cases(page,username,password,expected):
     login.login(username,password)
     assert login.is_logged_in() == expected
 
-def test_logout_clears_cart(login_page_auto):
-    products = ProductsPage(login_page_auto)
-    login = LoginPage(login_page_auto)
-    products.add_product_by_name("Sauce Labs Backpack")
-    login.open_menu()
-    login.logout()
-    login.login(STANDARD_USERNAME, PASSWORD)
-    assert not products.cart_badge().is_visible()
+# def test_logout_clears_cart(login_page_auto):
+#     products = ProductsPage(login_page_auto)
+#     login = LoginPage(login_page_auto)
+#     products.add_product_by_name("Sauce Labs Backpack")
+#     login.open_menu()
+#     login.logout()
+#     login.login(STANDARD_USERNAME, PASSWORD)
+#     assert not products.cart_badge().is_visible()

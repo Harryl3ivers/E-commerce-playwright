@@ -12,7 +12,7 @@ from playwright.sync_api import expect
     "Sauce Labs Bike Light",
     "Sauce Labs Onesie"
 ])
-def test_user_can_complete_checkout(shop_flow,product):
+def test_user_can_complete_checkout(shop_flow,product,database_connection):
     user = User("John", "Doe", "12345")
    
 
@@ -20,9 +20,9 @@ def test_user_can_complete_checkout(shop_flow,product):
 
     header = shop_flow.checkout.complete_header()
 
-    assert header.is_visible()
+    expect(header).to_be_visible()
     assert header.inner_text() == "Thank you for your order!"
-    price = get_product_by_price(product)
+    price = get_product_by_price(product,database_connection)
     assert price is not None
     
 

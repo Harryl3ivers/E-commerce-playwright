@@ -25,7 +25,7 @@ class ProductsPage(BasePage):
         return added_items
     
     def cart_badge(self):
-        return self.page.locator("shopping_cart_badge")
+        return self.page.locator(".shopping_cart_badge")
     
     def product_price_by_name(self,product_name:str):
         return self.page.locator(".inventory_item").filter(has_text=product_name).locator(".inventory_item_price")
